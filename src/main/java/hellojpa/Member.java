@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-public class Member {
+public class Member extends BaseEntity{
 
     @Id
     private Long id;
