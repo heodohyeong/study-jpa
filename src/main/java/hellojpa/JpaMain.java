@@ -10,7 +10,7 @@ import java.util.List;
 
 public class JpaMain {
 
-    public static void main(String[] args){
+    /*public static void main(String[] args){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
 
         EntityManager em = emf.createEntityManager();
@@ -19,16 +19,16 @@ public class JpaMain {
         tx.begin();
 
         try {
-            /*Member member = new Member();
+            *//*Member member = new Member();
             member.setId(2L);
             member.setName("HelloB");
             em.persist(member);
-            */
-            /*Member findMember = em.find(Member.class, 1L);
+            *//*
+            *//*Member findMember = em.find(Member.class, 1L);
             System.out.println("findMember.id = " + findMember.getId());
             System.out.println("findMember.name = " + findMember.getName());
 
-            findMember.setName("HelloJPA");*/
+            findMember.setName("HelloJPA");*//*
 
             List<Member> result = em.createQuery("select m from Member as m", Member.class)
                     .setFirstResult(5)
@@ -48,5 +48,40 @@ public class JpaMain {
         emf.close();
 
 
+    }*/
+     public static void main(String[] args){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+
+        EntityManager em = emf.createEntityManager();
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try {
+            Movie movie = new Movie();
+            movie.setDirector("aaaa");
+            movie.setActor("bbbb");
+            movie.setName("바람과함께사라지다");
+            movie.setPrice("10000");
+
+            em.persist(movie);
+
+            em.flush();
+            em.close();
+
+            Movie findMovie = em.find(Movie.class , movie.getId());
+            System.out.println("findMovie = " + findMovie);
+
+            tx.commit();
+        }catch (Exception e){
+            tx.rollback();
+        }finally {
+            em.close();
+        }
+        emf.close();
+
+
     }
+
+
 }
