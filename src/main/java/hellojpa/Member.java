@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.*;
 
 @Entity
 public class Member extends BaseEntity{
 
     @Id @GeneratedValue
+    @Column(name = "MEMBER_ID")
     private Long id;
 
     private String name;
@@ -46,6 +48,11 @@ public class Member extends BaseEntity{
         joinColumns = @JoinColumn(name = "MEMBER_ID")
     )
     private List<Address> addressHistory = new ArrayList<>();
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
 
     public Member(){}
 
@@ -108,5 +115,13 @@ public class Member extends BaseEntity{
 
     public void setAddressHistory(List<Address> addressHistory) {
         this.addressHistory = addressHistory;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }

@@ -66,11 +66,11 @@ public class JpaMain {
            member.getFavoriteFoods().add("피자");
            member.getFavoriteFoods().add("족발");
 
-           member.getAddressHistory().add(new Address("old1" , "street" , "101010"));
-           member.getAddressHistory().add(new Address("old2" , "street" , "101010"));
-           
+           member.getAddressHistory().add(new AddressEntity("old1" , "street" , "101010"));
+           member.getAddressHistory().add(new AddressEntity("old2" , "street" , "101010"));
+
            em.persist(member);
-           
+
            em.flush();
            em.clear();
 
@@ -85,11 +85,14 @@ public class JpaMain {
            findMember.getFavoriteFoods().add("한식");
 
 
+           findMember.getAddressHistory().remove(new Address("old1" , "street" , "101010"));
+           findMember.getAddressHistory().add(new AddressEntity("newCity1" , "street" , "101010"));
+
 
 
            //지연로딩 전략
-           for(Address address : findMember.getAddressHistory()){
-               System.out.println("favoriteFood = " + address.getCity());
+           for(AddressEntity address : findMember.getAddressHistory()){
+               System.out.println("address = " + address.getAddress().getCity());
            }
 
            for(String food : findMember.getFavoriteFoods()){
