@@ -58,23 +58,49 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Movie movie = new Movie();
-            movie.setDirector("aaaa");
-            movie.setActor("bbbb");
-            movie.setName("바람과함께사라지다");
-            movie.setPrice("10000");
+           Member member = new Member();
+           member.setName("hello");
+           member.setHomeAddress(new Address("homeCity" , "street" , "101010"));
 
-            em.persist(movie);
+           member.getFavoriteFoods().add("치킨");
+           member.getFavoriteFoods().add("피자");
+           member.getFavoriteFoods().add("족발");
 
-            em.flush();
-            em.close();
+           member.getAddressHistory().add(new Address("old1" , "street" , "101010"));
+           member.getAddressHistory().add(new Address("old2" , "street" , "101010"));
+           
+           em.persist(member);
+           
+           em.flush();
+           em.clear();
 
-            Movie findMovie = em.find(Movie.class , movie.getId());
-            System.out.println("findMovie = " + findMovie);
+           System.out.println("===================START==================");
+           Member findMember = em.find(Member.class, member.getId());
+
+           Address a = findMember.getHomeAddress();
+           findMember.setHomeAddress(new Address("newCity" , a.getStreet() , a.getZipcode()));
+
+           // 치킨 --> 한식
+           findMember.getFavoriteFoods().remove("치킨");
+           findMember.getFavoriteFoods().add("한식");
+
+
+
+
+           //지연로딩 전략
+           for(Address address : findMember.getAddressHistory()){
+               System.out.println("favoriteFood = " + address.getCity());
+           }
+
+           for(String food : findMember.getFavoriteFoods()){
+               System.out.println("favoriteFood = " + food);
+           }
+
 
             tx.commit();
         }catch (Exception e){
             tx.rollback();
+            e.printStackTrace();
         }finally {
             em.close();
         }
