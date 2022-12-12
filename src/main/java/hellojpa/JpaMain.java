@@ -84,12 +84,20 @@ public class JpaMain {
            findMember.getFavoriteFoods().remove("치킨");
            findMember.getFavoriteFoods().add("한식");
 
-
-           findMember.getAddressHistory().remove(new Address("old1" , "street" , "101010"));
+           //findMember.getAddressHistory().remove(new AddressEntity("old1" , "street" , "101010").getAddress());
+           for(AddressEntity address : findMember.getAddressHistory()){
+               System.out.println("address = " + address.getAddress().getCity());
+               if(address.getAddress().equals(new AddressEntity("old1" , "street" , "101010").getAddress())){
+                   findMember.getAddressHistory().remove(address);
+               }
+           }
            findMember.getAddressHistory().add(new AddressEntity("newCity1" , "street" , "101010"));
+           for(AddressEntity address : findMember.getAddressHistory()){
+               System.out.println("address = " + address.getAddress().getCity());
+           }
 
 
-
+            System.out.println("##################################################################");
            //지연로딩 전략
            for(AddressEntity address : findMember.getAddressHistory()){
                System.out.println("address = " + address.getAddress().getCity());
